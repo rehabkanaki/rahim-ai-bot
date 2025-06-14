@@ -10,26 +10,26 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-# قراءة المتغيرات البيئية
+# المفاتيح
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# إعداد عميل OpenAI
+# عميل OpenAI
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-# الدالة الرئيسية لمعالجة الرسائل
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message_text = update.message.text
-    chat_type = update.message.chat.type
-    bot_username = (await context.bot.get_me()).username.lower()
+# اسم البوت كما هو على تيليقرام (ثابت الآن)
+BOT_USERNAME = "rahim_ai_bot"
 
-    # الشرط: في القروبات فقط، لازم تحتوي الرسالة على @اسم_البوت أو كلمة "رحيم"
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    message_text = update.message.text.lower()
+    chat_type = update.message.chat.type
+
+    # تجاهل الرسائل في القروبات إلا لو تم مناداة البوت بالاسم أو بـ @
     if chat_type in ['group', 'supergroup']:
-        if f"@{bot_username}" not in message_text.lower() and "رحيم" not in message_text.lower():
-            return  # تجاهل الرسالة
+        if f"@{BOT_USERNAME}" not in message_text and "رحيم" not in message_text:
+            return
 
     try:
-        # إرسال الرسالة إلى ChatGPT
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -44,7 +44,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logging.error(f"Error: {e}")
         await update.message.reply_text("حصل خطأ، حاول مرة تانية.")
 
-# تشغيل التطبيق
+# تشغيل البوت
 if __name__ == '__main__':
     app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
