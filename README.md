@@ -1,6 +1,5 @@
-# rahim-ai-bot
-A Telegram bot powered by ChatGPT
 # Rahim AI Bot 🤖🧠
+A Telegram bot powered by ChatGPT
 
 بوت تليجرام ذكي يعتمد على ChatGPT ويستجيب تلقائيًا لرسائل المستخدمين داخل المجموعات أو المحادثات الخاصة.
 
