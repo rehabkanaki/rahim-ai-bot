@@ -17,14 +17,14 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 # عميل OpenAI
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-# اسم البوت كما هو على تيليقرام (ثابت الآن)
+# اسم البوت كما هو على تيليقرام (صغير وحرف @ مش داخل في المتغير)
 BOT_USERNAME = "rahim_ai_bot"
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_text = update.message.text.lower()
     chat_type = update.message.chat.type
 
-    # تجاهل الرسائل في القروبات إلا لو تم مناداة البوت بالاسم أو بـ @
+    # تجاهل رسائل القروبات إلا إذا تم ذكر اسم البوت أو التاق
     if chat_type in ['group', 'supergroup']:
         if f"@{BOT_USERNAME}" not in message_text and "رحيم" not in message_text:
             return
